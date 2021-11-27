@@ -13,7 +13,7 @@ output:
 lang: no-NB
 ---
 
-```{r setup}
+```{r setup, include=FALSE}
 suppressPackageStartupMessages({
   library(PxWebApiData)
   library(tidyverse)
@@ -74,6 +74,7 @@ n <- str_remove(
 )
 ```
 
+
 ```{r}
 load("test_string_tib.Rdata")
 ```
@@ -88,3 +89,6 @@ test_string_tib %>%
   mutate(
     knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
   )
+```
+
+
