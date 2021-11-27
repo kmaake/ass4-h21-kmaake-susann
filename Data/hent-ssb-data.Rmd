@@ -1,24 +1,90 @@
 ---
 title: "hent-ssb-data"
-output: html_notebook
+author:
+- "Kine Måkestad"
+- "Susann Sivertsen"
+fontsize: 12pt
+linestrech: 1.5
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+lang: no-NB
 ---
 
-```{r setup, include=FALSE} 
-knitr::opts_chunk$set(eval = FALSE)
+```{r setup}
+suppressPackageStartupMessages({
+  library(PxWebApiData)
+  library(tidyverse)
+  library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 ```
 
+```{r loaderindata}
+load("knr.Rdata")
+```
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+```{r gjennomsnittligkvmpris}
+pm2_raw <- ApiData(
+  urlToData = "06035",
+  Region = knr,
+  ContentsCode = "KvPris",
+  Boligtype = "01",
+  Tid = c(as.character(2002:2017))
+) 
+```
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+```{r datasett}
+pm2 <- pm2_raw$dataset
+```
+
+```{r vekkmedvariabler}
+pm2 <- pm2 %>% 
+  select(-Boligtype, -ContentsCode) %>% 
+  rename(
+    knr = Region,
+    aar = Tid,
+    pm2 = value
+  ) 
+```
+
+```{r endrernavntildesc}
+names(pm2_raw)[[1]] <- "desc"
+```
+
+```{r knavn}
+pm2 <- pm2 %>% 
+  mutate(
+    knavn = pm2_raw$desc$region
+  )
+```
 
 ```{r}
-plot(cars)
+pm2$knavn <- str_remove(
+  string = pm2$knavn,
+  pattern = fixed(" (-2019)")
+)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+```{r}
+n <- str_remove(
+  string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+```
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+```{r}
+load("test_string_tib.Rdata")
+```
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
+```{r}
+moenster <- '.fixed("(1994-2019)")'
+```
+
+```{r}
+test_string_tib %>% 
+  mutate(
+    knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+  )
