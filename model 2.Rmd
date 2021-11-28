@@ -1,0 +1,18 @@
+---
+title: "Modeller"
+output: html_notebook
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(lubridate)
+  library(modelr)
+  library(broom)
+  library(lmtest)
+  library(sandwich)
+  library(viridis)
+})
+```
+
+

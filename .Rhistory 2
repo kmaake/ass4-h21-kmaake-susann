@@ -1,0 +1,512 @@
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tid.Rdata")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("~/Documents/knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Documents/test_string_tib.Rdata")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("~/Documents/knr.Rdata")
+load("test_string_tib.Rdata")
+load("~/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/knr.Rdata")
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/test_string_tib.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/knr.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/test_string_tib.Rdata")
+View(pm2_raw)
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("~/Documents/knr.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/test_string_tib.Rdata")
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/knr.Rdata")
+load("test_string_tib.Rdata")
+load("/knr.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("/knr.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/knr.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+knitr::opts_chunk$set(echo = TRUE)
+library("usethis")
+git_sitrep() # git situation report
+library(gitcreds)
+gitcreds_set()
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("~/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/Data/knr.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+moenster <- '.fixed("(1994-2019)")'
+test_string_tib %>%
+mutate(
+knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+test_string_tib %>%
+mutate(
+knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+load("~/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/Data/knr.Rdata")
+load("test_string_tib.Rdata")
+load("R.data")
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata/test_string_tib.Rdata")
+load("/Users/kinemakestad/Downloads/test_string_tib.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load(test_string_tib.Rdata)
+load("test_string_tib.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+test_string_tib %>%
+mutate(
+knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+load("test_string_tib.Rdata")
+load("test_string_tib")
+load("test_string_tib.Rdata")
+load("knr.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+install.packages(c("backports", "broom", "car", "cli", "conquer", "corrplot", "COVID19", "cpp11", "crayon", "flextable", "gert", "glue", "lmtest", "memoise", "nloptr", "officer", "ragg", "readr", "rex", "rio", "sessioninfo", "sp", "tibble", "tinytex", "tzdb", "usethis", "uuid", "vroom", "wooldridge", "xfun"))
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+test_string_tib %>%
+mutate(
+knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = TRUE, include = FALSE)
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = TRUE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+load("~/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/Data/knr.Rdata")
+load("/Users/kinemakestad/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/Data/knr.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("test_string_tib.Rdata")
+load("knr.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+load("/Users/kinemakestad/Downloads/knr.Rdata")
+load("test_string_tib.Rdata")
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+load("knr.Rdata")
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+pm2 <- pm2_raw$dataset
+pm2 <- pm2 %>%
+select(-Boligtype, -ContentsCode) %>%
+rename(
+knr = Region,
+aar = Tid,
+pm2 = value
+)
+names(pm2_raw)[[1]] <- "desc"
+pm2 <- pm2 %>%
+mutate(
+knavn = pm2_raw$desc$region
+)
+pm2$knavn <- str_remove(
+string = pm2$knavn,
+pattern = fixed(" (-2019)")
+)
+n <- str_remove(
+string = pm2$knavn, pattern = fixed("(1994-2019")
+)
+load("test_string_tib.Rdata")
+knitr::opts_chunk$set(echo = TRUE)
+load("~/Documents/Master i sivilokonom/1. Semester/Data science/ass4-h21-kmaake-susann/Data/knr.Rdata")
