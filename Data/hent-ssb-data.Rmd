@@ -13,6 +13,16 @@ output:
 lang: no-NB
 ---
 
+## Assignment 4: SSB data
+
+## Data hentet
+Data sist hentet 28. desember 2021.
+
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
 ```{r setup, include=FALSE}
 suppressPackageStartupMessages({
   library(PxWebApiData)
@@ -22,9 +32,12 @@ suppressPackageStartupMessages({
 knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 ```
 
+Laster inn data for alle kommunene, og disse ligger i "knr.Rdata". 
+
 ```{r loaderindata}
 load("knr.Rdata")
 ```
+
 
 ```{r gjennomsnittligkvmpris}
 pm2_raw <- ApiData(
@@ -33,26 +46,28 @@ pm2_raw <- ApiData(
   ContentsCode = "KvPris",
   Boligtype = "01",
   Tid = c(as.character(2002:2017))
-) 
+)
 ```
+
 
 ```{r datasett}
-pm2 <- pm2_raw$dataset
-```
-
-```{r vekkmedvariabler}
-pm2 <- pm2 %>% 
+pm2 <- pm2_raw$dataset %>% 
+  tibble() %>% 
   select(-Boligtype, -ContentsCode) %>% 
   rename(
     knr = Region,
     aar = Tid,
     pm2 = value
-  ) 
+  )
+head(pm2)
 ```
+
 
 ```{r endrernavntildesc}
 names(pm2_raw)[[1]] <- "desc"
 ```
+
+
 
 ```{r knavn}
 pm2 <- pm2 %>% 
@@ -61,34 +76,61 @@ pm2 <- pm2 %>%
   )
 ```
 
-```{r}
-pm2$knavn <- str_remove(
-  string = pm2$knavn,
-  pattern = fixed(" (-2019)")
-)
-```
-
-```{r}
-n <- str_remove(
-  string = pm2$knavn, pattern = fixed("(1994-2019")
-)
-```
 
 
 ```{r}
 load("test_string_tib.Rdata")
+
+# Legg inn regex mønster
+moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
 ```
 
 
-```{r}
-moenster <- '.fixed("(1994-2019)")'
-```
 
 ```{r}
 test_string_tib %>% 
   mutate(
-    knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+    knavn = str_replace(knavn, moenster, "")
   )
 ```
+
+## NA-verdier i pm2
+
+```{r}
+
+```
+
+
+```{r}
+map_df(pm2$aar, sum(is.na(pm2$aar)))
+```
+
+
+```{r}
+map_df(pm2$pm2, sum(is.na(pm2$pm2)))
+```
+
+
+```{r}
+pm2 %>% 
+  filter(is.na(aar))
+```
+
+```{r}
+pm2 %>% 
+  filter(is.na(pm2))
+```
+
+
+```{r}
+pm2 %>%
+  filter(sum(is.na(pm2)))
+  table()
+```
+
+ 
+
+
+
 
 
