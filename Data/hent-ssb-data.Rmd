@@ -394,7 +394,7 @@ rm(inc_08_17, inc_08_17_raw, pop_08_17_ya_p)
 
 # Prosent av befolklning med universitet/høgskolen utdanning
 
-```{r}
+```{r henterdata av med utdannelse}
 uni_p_raw <- ApiData(
   urlToData = "09429",
   Region = knr,
@@ -408,7 +408,7 @@ uni_p_raw <- ApiData(
 ```
 
 
-```{r}
+```{r tibble}
 uni_p_raw <- tibble(
   knr = uni_p_raw$dataset$Region,
   aar = uni_p_raw$dataset$Tid,
@@ -422,17 +422,17 @@ head(uni_p_raw, n=5)
 
 
 
-```{r}
+```{r rekoder med nivaa}
 uni_p_raw <- uni_p_raw %>% 
   mutate(
     nivaa = fct_recode(nivaa,
                        "uni_k" = "Universitets- og høgskolenivå, kort",
                        "uni_l" = "Universitets- og høgskolenivå, lang")
-  )
+  ) 
 ```
 
 
-```{r}
+```{r rekoder med Kjonn}
 uni_p_raw <- uni_p_raw %>% 
   mutate(
     Kjonn = fct_recode(Kjonn,
@@ -440,22 +440,37 @@ uni_p_raw <- uni_p_raw %>%
                        "f" = "Kvinner",
                        "m" = "Menn"
                        )
-  )
+  ) 
 ```
 
 
+
+
 ```{r}
-uni_p_raw <- uni_p_raw %>% 
-  mutate(
-    
-  )
+  pivot_wider(
+    id_cols = c(knr, aar),
+    names_prefix = "uni_k_mf",
+    names_from = Kjonn,
+    values_from = uni_p_raw$uni_p,
+) 
 ```
 
 
-```{r}
+```{r head}
 head(uni_p_raw, n = 8)
 ```
 
+# Handelsomsetning per innbygger
+
+```{r henter data av handelsomsetning}
+trade_08_17 <- ApiData(
+  urlToData = "04776",
+  Region = knr,
+  Tid = c(
+    as.character(2008:2017)
+  )
+)
+```
 
 
 
