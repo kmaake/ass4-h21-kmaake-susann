@@ -15,8 +15,7 @@ lang: no-NB
 
 ## Assignment 4: SSB data
 
-## Data hentet
-Data sist hentet 28. desember 2021.
+## Data hentet, SSB
 
 ```{r}
 knitr::opts_chunk$set(eval = FALSE)
@@ -35,9 +34,15 @@ knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 Laster inn data for alle kommunene, og disse ligger i "knr.Rdata". 
 
 ```{r loaderindata}
+#Vector med relevante kommunenummer
 load("knr.Rdata")
 ```
 
+# Gjennomsnittlig kvmpris
+
+I denne oppgaven skal vi se på prisen per kvadratmeter. For å kunne studere dette så skal vi hente data fra SSB.
+
+## Data henting, SSB
 
 ```{r gjennomsnittligkvmpris}
 pm2_raw <- ApiData(
@@ -62,23 +67,26 @@ pm2 <- pm2_raw$dataset %>%
 head(pm2)
 ```
 
-
 ```{r endrernavntildesc}
 names(pm2_raw)[[1]] <- "desc"
 ```
 
 
-
-```{r knavn}
+```{r mutate}
 pm2 <- pm2 %>% 
   mutate(
-    knavn = pm2_raw$desc$region
-  )
+    knavn = pm2_raw$desc$region) %>% 
+  group_by(knr) %>% 
+  select(knr, knavn, aar, pm2)
 ```
 
+Som en kan se så er vi kun interessert i eneboliger, og derfor kan man se i datasettet *pm2_raw* at eneboliger står som *01*. Siden vi skal finne pris per kvadratmeter til eneboligene, så fjerner vi *ContentsCode* og *Boligtype*.
 
+## Laster inn test_string_tid.Rdata
 
-```{r}
+I neste steg laster vi inn test_string_tib_Rdata og lager *moenster*. Grunnen for at vi lager *moenster* er fordi vi vil ha vekk når de ulike kommunene ble oppløst og dannet. 
+
+```{r teststringtibdata}
 load("test_string_tib.Rdata")
 
 # Legg inn regex mønster
@@ -87,8 +95,8 @@ moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
 
 
 
-```{r}
-test_string_tib %>% 
+```{r strreplace}
+pm2 <- pm2 %>% 
   mutate(
     knavn = str_replace(knavn, moenster, "")
   )
@@ -96,28 +104,141 @@ test_string_tib %>%
 
 ## NA-verdier i pm2
 
-```{r}
-df_pm2 <- pm2 %>% 
+Nå skal vi finne hvor mange NA-verdier det er i pm2. Og under kan vi se at vi ikke har noen NA-verdier i *knr*, *knavn* eller *aar*. Derimot har vi 2903 NA-verdier i *pm2*. 
+
+```{r is.na}
+pm2 %>% 
   map_df(is.na) %>% 
-  map_df(sum)
-```
-
-
-```{r}
-df_pm2 %>% 
-  table()
+  map_df(sum) %>% 
+  as.tibble()
 ```
 
 
 ## Complete.cases
 
-```{r}
+Med complete.cases så finner vi antall rekker uten NA verdier, fra og med 2006 til og med 2017:
 
+```{r comppletecases2006}
+pm2_2006 <- pm2 %>% 
+  filter(aar >= 2006) %>% 
+  pivot_wider(
+    names_from = aar,
+    values_from = pm2)
+```
+
+
+```{r 2006}
+pm2_2006 %>% 
+  complete.cases() %>% 
+  sum()
+```
+
+Med complete.cases så finner vi antall rekker uten NA verdier, fra og med 2008 til og med 2017:
+
+```{r completecases2008}
+pm2_2008 <- pm2 %>% 
+  filter(aar >= 2008) %>% 
+  pivot_wider(
+    names_from = aar,
+    values_from = pm2
+  )
+```
+
+
+```{r 2008}
+pm2_2008 %>% 
+  complete.cases() %>% 
+  sum()
+```
+
+### Rydding
+
+Vi trenger ikke lengre *pm2_raw*, så derfor fjerner vi denne.
+
+```{r remove}
+rm(pm2_raw)
+```
+
+
+# Befolkning: "yrkesaktiv alder"
+
+## Data henting, SSB
+
+
+```{r henterdata}
+pop_08_17_ya_raw <- ApiData(
+  urlToData = "07459",
+  Region = knr,
+  Kjonn = c(1,2),
+  Alder = list("agg:TredeltGrupperingB2",
+               c("F20-64")),
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+    select(-ContentsCode, -Alder)
+```
+
+
+```{r pivotwider}
+pop_08_17_ya <- pop_08_17_ya_raw %>% 
+  pivot_wider(
+    names_from = Kjonn,
+    values_from = value
+  ) 
+```
+
+
+```{r names}
+names(pop_08_17_ya)[[1]] <- "knr"
+names(pop_08_17_ya)[[2]] <- "aar"
+names(pop_08_17_ya)[[3]] <- "ya_Menn"
+names(pop_08_17_ya)[[4]] <- "ya_Kvinner"
+```
+
+
+```{r mutate}
+pop_08_17_ya <- pop_08_17_ya %>% 
+  mutate(ya_Total = ya_Menn+ya_Kvinner)
 ```
 
 
 
- 
+```{r dim}
+dim(pop_08_17_ya)
+```
+
+## Data henting 2, SSB
+
+```{r loaddata}
+pop_08_17_raw <- ApiData(
+  urlToData = "07459",
+  Region = knr,
+  Kjonn = c(1,2),
+  Alder = list("agg:TodeltGrupperingB",
+               c("H17", "H18")),
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+    select(-ContentsCode, -Alder)
+```
+
+
+```{r}
+pop_08_17 <- pop_08_17_raw %>% 
+  pivot_wider(
+    names_from = Kjonn,
+    values_from = value
+  )
+```
+
+
+
+
+# Øvre og nedre desil/kvintil
+
+## Data henting, SSB
+
+```{r}
+Kvintiler_08_17 <- ApiData()
+```
 
 
 
