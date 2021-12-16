@@ -303,7 +303,7 @@ pop_08_17_ya_p <- pop_08_17_ya_p %>%
   select(knr, aar, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
 ```
 
-```{r}
+```{r head}
 head(pop_08_17_ya_p, n=5)
 ```
 
@@ -421,7 +421,7 @@ uni_p <- tibble(
   uni_p = uni_p$dataset$value
 )
 
-head(uni_p_raw, n=5)
+head(uni_p, n=5)
 ```
 
 
@@ -459,6 +459,19 @@ uni_p <- uni_p %>%
 ```{r head}
 head(uni_p, n = 8)
 ```
+## Setter sammen uni_p med pm2
+
+```{r merge}
+pm2 <- merge(pm2, uni_p)
+```
+
+
+## Sletting av objekter
+
+```{r bruker rm}
+rm(uni_p, uni_p_raw)
+```
+
 
 # Handelsomsetning per innbygger
 
@@ -472,7 +485,51 @@ trade_08_17 <- ApiData(
 )
 ```
 
+```{r tibble}
+trade_08_17 <- tibble(
+  aar = trade_08_17$dataset$Tid,
+  value = trade_08_17$dataset$value,
+  knr = trade_08_17$dataset$Region
+)
+```
 
 
 
+```{r}
+Trade_pc <- trade_08_17
+```
+
+```{r merge}
+pm2 <- merge(pm2, Trade_pc)
+```
+
+## Sletter objekter
+
+```{r}
+rm(trade_08_17, Trade_pc)
+```
+
+```{r dim}
+dim(pm2)
+```
+
+```{r names}
+names(pm2)
+```
+
+```{r}
+pm2 %>% 
+  select(knr:inc_k5) %>% 
+  head(n=8)
+```
+
+```{r}
+pm2 %>% 
+  select(uni_k_mf:Trade_pc) %>% 
+  head(n=8)
+```
+
+```{r}
+write.csv(pm2, "pm2.csv")
+```
 
