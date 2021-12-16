@@ -330,10 +330,128 @@ rm(pop_08_17_raw, pop_08_17_ya_raw, pop_08_17, pop_08_17_ya, pm2_2006, pm2_2008)
 
 ## Data henting, SSB
 
-```{r}
-Kvintiler_08_17 <- ApiData()
+```{r henterdata}
+inc_08_17_raw <- ApiData(
+  urlToData = "12558",
+  Region = knr,
+  Desiler = c("01", "02", "09", "10"),
+  ContentsCode = "AndelHush",
+  InntektSkatt = "00",
+  Tid = c(
+    as.character(2008:2017)
+  )
+)$dataset %>% 
+  select(Region, Desiler, Tid, value)
 ```
 
+
+```{r pivotwider}
+inc_08_17 <- inc_08_17_raw %>% 
+  pivot_wider(
+    names_from = Desiler,
+    values_from = value
+  )
+```
+
+
+```{r nanvgivariabler}
+names(inc_08_17)[[1]] <- "knr"
+names(inc_08_17)[[2]] <- "aar"
+names(inc_08_17)[[3]] <- "Desil_1"
+names(inc_08_17)[[4]] <- "Desil_2"
+names(inc_08_17)[[5]] <- "Desil_9"
+names(inc_08_17)[[6]] <- "Desil_10"
+```
+
+```{r mutatevariabler}
+inc_08_17 <- inc_08_17 %>% 
+  mutate(inc_k1 = Desil_1 + Desil_2) %>% 
+  mutate(inc_k5 = Desil_9 + Desil_10)
+```
+
+
+```{r selectvariabler}
+inc_08_17 <- inc_08_17 %>% 
+  select(knr, aar, inc_k1, inc_k5)
+```
+
+```{r names}
+names(inc_08_17)
+```
+
+```{r dim}
+dim(inc_08_17)
+```
+
+
+```{r Mergeavdatasett}
+pm2 <- merge(pm2, inc_08_17)
+```
+
+```{r rydderopp}
+rm(inc_08_17, inc_08_17_raw, pop_08_17_ya_p)
+```
+
+# Prosent av befolklning med universitet/høgskolen utdanning
+
+```{r}
+uni_p_raw <- ApiData(
+  urlToData = "09429",
+  Region = knr,
+  Nivaa = c("03a", "04a"),
+  Kjonn = c("0"),
+  ContentsCode = "PersonerProsent",
+  Tid = c(
+    as.character(2008:2017)
+  )
+)
+```
+
+
+```{r}
+uni_p_raw <- tibble(
+  knr = uni_p_raw$dataset$Region,
+  aar = uni_p_raw$dataset$Tid,
+  Kjonn = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$kjønn,
+  nivaa = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$nivå,
+  uni_p = uni_p_raw$dataset$value
+)
+
+head(uni_p_raw, n=5)
+```
+
+
+```{r}
+uni_p_raw <- tibble(
+  knr = uni_p_raw$dataset$Region,
+  Kjonn = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$kjønn,
+  nivaa = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$nivå,
+  uni_p_raw = uni_p_raw$dataset$value,
+  aar = uni_p_raw$dataset$Tid
+)
+
+head(uni_p_raw, n=5)
+```
+
+
+
+
+```{r pivotwideruni}
+uni_p <- uni_p_raw %>% 
+  pivot_wider(
+    names_from = Nivaa,
+    values_from = value
+  ) 
+```
+
+
+```{r names}
+names(uni_p)[[1]] <- "knr"
+names(uni_p)[[2]] <- "Kjonn"
+names(uni_p)[[3]] <- "aar"
+names(uni_p)[[5]] <- "Universitets-og høgskole utdanning, kort"
+names(uni_p)[[6]] <- "Universitets-og høgskole utdanning, lang"
+```
 
 
 
