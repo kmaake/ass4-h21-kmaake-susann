@@ -153,8 +153,9 @@ pm2_2008 %>%
 ```
 
 ```{r}
-pm2 <- pm2_2008 %>% 
-  na.omit(pm2)
+pm2 <- pm2 %>%
+  left_join(pm2_2008) %>% 
+  na.omit()
 ```
 
 
@@ -315,7 +316,7 @@ pm2 <- merge(pm2, pop_08_17_ya_p)
 
 ```{r}
 pm2 <- pm2 %>% 
-  select(knr, knavn, aar, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
+  select(knr, knavn, aar, pm2, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
 ```
 
 
@@ -488,7 +489,7 @@ trade_08_17 <- ApiData(
 ```{r tibble}
 trade_08_17 <- tibble(
   aar = trade_08_17$dataset$Tid,
-  value = trade_08_17$dataset$value,
+  Trade_p = trade_08_17$dataset$value,
   knr = trade_08_17$dataset$Region
 )
 ```
@@ -525,7 +526,7 @@ pm2 %>%
 
 ```{r}
 pm2 %>% 
-  select(uni_k_mf:Trade_pc) %>% 
+  select(uni_k_mf:Trade_p) %>% 
   head(n=8)
 ```
 
