@@ -192,7 +192,7 @@ pop_08_17_ya <- pop_08_17_ya_raw %>%
     id_cols = c(Region, Tid),
     names_prefix = "sex",
     names_from = Kjonn,
-    values_from = value
+    values_from = value,
 ) 
 ```
 
@@ -211,14 +211,18 @@ pop_08_17_ya <- pop_08_17_ya %>%
 ```
 
 
-
 ```{r dim}
 dim(pop_08_17_ya)
 ```
 
+```{r}
+names(pop_08_17_ya)
+```
+
+
 ## Data henting 2, SSB
 
-```{r}
+```{r loaddata}
 pop_08_17_raw <- ApiData(
   urlToData = "07459",
   Region = knr,
@@ -231,20 +235,98 @@ pop_08_17_raw <- ApiData(
 ```
 
 
-
-```{r}
+```{r pivotwider}
 pop_08_17 <- pop_08_17_raw %>% 
   pivot_wider(
-    names_from = Alder,
-    values_from = Kjonn
+    names_from = Kjonn,
+    values_from = value
   )
 ```
 
 
+```{r names}
+names(pop_08_17)[[1]] <- "knr"
+names(pop_08_17)[[2]] <- "Alder"
+names(pop_08_17)[[3]] <- "aar"
+names(pop_08_17)[[4]] <- "Menn"
+names(pop_08_17)[[5]] <- "Kvinner"
+```
 
 
 
-# Øvre og nedre desil/kvintil
+```{r pivotwider}
+pop_08_17 <- pop_08_17 %>% 
+  pivot_wider(
+    names_from = Alder,
+    values_from = c(Menn, Kvinner)
+  )
+```
+
+
+```{r mutate}
+pop_08_17 <- pop_08_17 %>% 
+  mutate(Menn_t = Menn_H17 + Menn_H18) %>% 
+  mutate(Kvinner_t = Kvinner_H17 + Kvinner_H18) %>% 
+  mutate(Totalt_t = Menn_t + Kvinner_t)
+```
+
+
+```{r select}
+pop_08_17 <- pop_08_17 %>% 
+  select(knr, aar, Menn_t, Kvinner_t, Totalt_t)
+```
+
+
+```{r dim}
+dim(pop_08_17)
+```
+
+```{r names}
+names(pop_08_17)
+```
+
+```{r merge}
+pop_08_17_ya_p <- merge(pop_08_17, pop_08_17_ya)
+```
+
+### Her skal vi mutere nye variabler
+
+```{r mutate}
+pop_08_17_ya_p <- pop_08_17_ya_p %>% 
+  mutate(Menn_ya_p = ya_Menn/Menn_t*100) %>% 
+  mutate(Kvinner_ya_p = ya_Kvinner/Kvinner_t*100) %>% 
+  mutate(Total_ya_p = ya_Total/Totalt_t*100)
+```
+
+```{r select}
+pop_08_17_ya_p <- pop_08_17_ya_p %>% 
+  select(knr, aar, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
+```
+
+```{r}
+head(pop_08_17_ya_p, n=5)
+```
+
+## Legger ya variablene til pm2 tibble-en
+
+```{r mergetilpm2}
+pm2 <- merge(pm2, pop_08_17_ya_p)
+```
+
+```{r}
+pm2 <- pm2 %>% 
+  select(knr, knavn, aar, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
+```
+
+
+## Rydder opp
+
+```{r}
+rm(pop_08_17_raw, pop_08_17_ya_raw, pop_08_17, pop_08_17_ya, pm2_2006, pm2_2008)
+```
+
+
+# Intektsdesiler
 
 ## Data henting, SSB
 
