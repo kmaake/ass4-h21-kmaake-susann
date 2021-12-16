@@ -399,7 +399,7 @@ uni_p_raw <- ApiData(
   urlToData = "09429",
   Region = knr,
   Nivaa = c("03a", "04a"),
-  Kjonn = c("0"),
+  Kjonn = TRUE,
   ContentsCode = "PersonerProsent",
   Tid = c(
     as.character(2008:2017)
@@ -421,37 +421,42 @@ head(uni_p_raw, n=5)
 ```
 
 
+
 ```{r}
-uni_p_raw <- tibble(
-  knr = uni_p_raw$dataset$Region,
-  Kjonn = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$kjønn,
-  nivaa = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$nivå,
-  uni_p_raw = uni_p_raw$dataset$value,
-  aar = uni_p_raw$dataset$Tid
-)
-
-head(uni_p_raw, n=5)
+uni_p_raw <- uni_p_raw %>% 
+  mutate(
+    nivaa = fct_recode(nivaa,
+                       "uni_k" = "Universitets- og høgskolenivå, kort",
+                       "uni_l" = "Universitets- og høgskolenivå, lang")
+  )
 ```
 
 
-
-
-```{r pivotwideruni}
-uni_p <- uni_p_raw %>% 
-  pivot_wider(
-    names_from = Nivaa,
-    values_from = value
-  ) 
+```{r}
+uni_p_raw <- uni_p_raw %>% 
+  mutate(
+    Kjonn = fct_recode(Kjonn,
+                       "mf" = "Begge kjønn",
+                       "f" = "Kvinner",
+                       "m" = "Menn"
+                       )
+  )
 ```
 
 
-```{r names}
-names(uni_p)[[1]] <- "knr"
-names(uni_p)[[2]] <- "Kjonn"
-names(uni_p)[[3]] <- "aar"
-names(uni_p)[[5]] <- "Universitets-og høgskole utdanning, kort"
-names(uni_p)[[6]] <- "Universitets-og høgskole utdanning, lang"
+```{r}
+uni_p_raw <- uni_p_raw %>% 
+  mutate(
+    
+  )
 ```
+
+
+```{r}
+head(uni_p_raw, n = 8)
+```
+
+
 
 
 
