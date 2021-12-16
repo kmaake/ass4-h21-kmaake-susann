@@ -90,7 +90,7 @@ I neste steg laster vi inn test_string_tib_Rdata og lager *moenster*. Grunnen fo
 load("test_string_tib.Rdata")
 
 # Legg inn regex mønster
-moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
+moenster <- '\\s*\\([\\d\\s-]*\\d*\\)\\s*$'
 ```
 
 
@@ -129,9 +129,10 @@ pm2_2006 <- pm2 %>%
 
 ```{r 2006}
 pm2_2006 %>% 
-  complete.cases() %>% 
+  complete.cases() %>%
   sum()
 ```
+
 
 Med complete.cases så finner vi antall rekker uten NA verdier, fra og med 2008 til og med 2017:
 
@@ -150,6 +151,12 @@ pm2_2008 %>%
   complete.cases() %>% 
   sum()
 ```
+
+```{r}
+pm2 <- pm2_2008 %>% 
+  na.omit(pm2)
+```
+
 
 ### Rydding
 
@@ -178,12 +185,15 @@ pop_08_17_ya_raw <- ApiData(
 ```
 
 
+
 ```{r pivotwider}
 pop_08_17_ya <- pop_08_17_ya_raw %>% 
   pivot_wider(
+    id_cols = c(Region, Tid),
+    names_prefix = "sex",
     names_from = Kjonn,
     values_from = value
-  ) 
+) 
 ```
 
 
@@ -208,7 +218,7 @@ dim(pop_08_17_ya)
 
 ## Data henting 2, SSB
 
-```{r loaddata}
+```{r}
 pop_08_17_raw <- ApiData(
   urlToData = "07459",
   Region = knr,
@@ -217,17 +227,19 @@ pop_08_17_raw <- ApiData(
                c("H17", "H18")),
   Tid = c(as.character(2008:2017))
 )$dataset %>% 
-    select(-ContentsCode, -Alder)
+  select(-ContentsCode)
 ```
+
 
 
 ```{r}
 pop_08_17 <- pop_08_17_raw %>% 
   pivot_wider(
-    names_from = Kjonn,
-    values_from = value
+    names_from = Alder,
+    values_from = Kjonn
   )
 ```
+
 
 
 
