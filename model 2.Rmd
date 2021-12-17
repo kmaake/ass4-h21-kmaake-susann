@@ -110,4 +110,40 @@ I denne testen har vi problemer med heteroskedastisitet, fordi p-verdien er mest
 
 ### iii
 
+```{r}
+coeftest(lm1)
+```
+
+```{r}
+vcovHC(lm1)
+```
+
+### iv 
+
+```{r}
+pm2 <- pm2 %>%
+  add_residuals(lm1)
+```
+
+
+### v 
+
+```{r}
+pm2 <- pm2 %>%
+  mutate(aar_d = make_date(aar))
+```
+
+### vi 
+
+```{r}
+pm2 <- pm2 %>%
+  mutate(fylke = substr(knr, start = 1, stop = 2)) 
+
+pm2 <- pm2 %>% 
+  filter(fylke %in% c("01", "02", "03", "11", "12"))
+
+```
+
+
+
 
