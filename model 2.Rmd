@@ -235,3 +235,6 @@ Kommuner som overvurderes på pris per kvadratmeter er de som ligger i nærheten
 
 # Modell for hvert år 
 
+
+
+
