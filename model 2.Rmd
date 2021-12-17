@@ -90,8 +90,10 @@ head(pm2, n=4)
 
 ### i 
 Derom året er 2009 øker pm2 med 104, 2010 med 908 osv. og til slutt i 2017 øker pm2 med 5146. 
+År 2009 er ikke signifikant, men fra år 2010-2017 er koeffisientene signifikant på 0,1% nivå. Man ser en økning fra år til år i koeffisientene. 
 
 ### ii 
 
+Vet ikke.
 
 ## Heteroskedastisitet 
