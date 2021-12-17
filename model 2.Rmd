@@ -62,16 +62,16 @@ head(pm2, n = 4)
 
 ### i
 
-```{r}
+```{r mod}
 mod1 <- 'pm2 ~ aar_f + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
 ```
 
 
-```{r}
+```{r lm}
 lm1 <- lm(mod1, data = pm2, subset = complete.cases(pm2))
 ```
 
-```{r}
+```{r sum}
 summary(lm1)
 ```
 
@@ -79,7 +79,7 @@ summary(lm1)
 
 ### Legge til residualene fr aden linære modellen til datasettet pm2
 
-```{r}
+```{r legger til residualene}
 pm2 %>% 
   add_residuals(lm1)
 
@@ -97,3 +97,17 @@ Derom året er 2009 øker pm2 med 104, 2010 med 908 osv. og til slutt i 2017 øk
 Vet ikke.
 
 ## Heteroskedastisitet 
+
+### i
+
+```{r bptest}
+bptest(lm1)
+```
+
+### ii 
+
+I denne testen har vi problemer med heteroskedastisitet, fordi p-verdien er mest sannsynlig større en 0,05. 
+
+### iii
+
+
