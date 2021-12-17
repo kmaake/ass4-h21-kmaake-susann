@@ -60,7 +60,7 @@ head(pm2, n = 4)
 
 # Modell
 
-## i
+### i
 
 ```{r}
 mod1 <- 'pm2 ~ aar_f + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
@@ -75,9 +75,9 @@ lm1 <- lm(mod1, data = pm2, subset = complete.cases(pm2))
 summary(lm1)
 ```
 
-## ii
+### ii
 
-## Legge til residualene fr aden linære modellen til datasettet pm2
+### Legge til residualene fr aden linære modellen til datasettet pm2
 
 ```{r}
 pm2 %>% 
@@ -86,3 +86,12 @@ pm2 %>%
 head(pm2, n=4)
 ```
 
+## Forklaring til modell
+
+### i 
+Derom året er 2009 øker pm2 med 104, 2010 med 908 osv. og til slutt i 2017 øker pm2 med 5146. 
+
+### ii 
+
+
+## Heteroskedastisitet 
