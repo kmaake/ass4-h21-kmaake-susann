@@ -230,7 +230,17 @@ theme(legend.position = 'bottom')
 
 ### ii 
 
+<<<<<<< HEAD
 Kommuner som overvurderes på pris per kvadratmeter er de som ligger i nærheten av Stavanger. De som ligger nærmere Haugesund undervurderes. 
+=======
+```{r den andre modellen}
+mod2 <- 'fnr * aar_f + totalt_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+```
+
+```{r}
+lm2 <- lm(mod2, data = lm1, subset = complete.cases(lm1))
+```
+>>>>>>> fc6df8b6f7a693020c16d7cd7073aed10242ef78
 
 
 # Modell for hvert år 
