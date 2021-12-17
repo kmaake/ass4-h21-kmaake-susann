@@ -453,7 +453,7 @@ uni_p <- uni_p %>%
   pivot_wider(
     id_cols = c(knr, aar),
     names_from = c(nivaa, Kjonn),
-    values_from = uni_p,
+    values_from = uni_p
 ) 
 ```
 
