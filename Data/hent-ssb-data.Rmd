@@ -489,7 +489,7 @@ trade_08_17 <- ApiData(
 ```{r tibble}
 trade_08_17 <- tibble(
   aar = trade_08_17$dataset$Tid,
-  Trade_pc = trade_08_17$dataset$value,
+  Trade_p = trade_08_17$dataset$value,
   knr = trade_08_17$dataset$Region
 )
 ```
@@ -526,7 +526,7 @@ pm2 %>%
 
 ```{r}
 pm2 %>% 
-  select(uni_k_mf:Trade_pc) %>% 
+  select(uni_k_mf:Trade_p) %>% 
   head(n=8)
 ```
 
