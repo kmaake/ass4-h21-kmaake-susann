@@ -163,6 +163,13 @@ pm2 %>%
 
 ### i
 
+```{r den andre modellen}
+mod2 <- 'fnr * aar_f + totalt_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+```
+
+```{r}
+lm2 <- lm(mod2, data = lm1, subset = complete.cases(lm1))
+```
 
 
 
