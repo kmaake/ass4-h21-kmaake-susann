@@ -13,6 +13,20 @@ suppressPackageStartupMessages({
   library(sandwich)
   library(viridis)
 })
+# Chunk opsjonene satt nedenfor er for mitt bruk
+# Gjør at jeg kan holde noen av kortene skjult ;-)
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+```
+
+
+```{r henter pm2 filen}
+pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
+```
+
+
+```{r}
+pm2 <- pm2 %>% 
+  mutate()
 ```
 
 
