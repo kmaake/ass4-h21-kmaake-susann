@@ -60,6 +60,8 @@ head(pm2, n = 4)
 
 # Modell
 
+## i
+
 ```{r}
 mod1 <- 'pm2 ~ aar_f + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
 ```
@@ -71,5 +73,16 @@ lm1 <- lm(mod1, data = pm2, subset = complete.cases(pm2))
 
 ```{r}
 summary(lm1)
+```
+
+## ii
+
+## Legge til residualene fr aden linære modellen til datasettet pm2
+
+```{r}
+pm2 %>% 
+  add_residuals(lm1)
+
+head(pm2, n=4)
 ```
 
