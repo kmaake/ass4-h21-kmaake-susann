@@ -145,5 +145,24 @@ pm2 <- pm2 %>%
 ```
 
 
+### vii - x
+
+ggplot med farge på fylkene, og legend.position. Legger også inn horisontal linje for y
+```{r ggplot }
+pm2 %>% 
+  unnest(c(fylke)) %>% 
+  group_by(fylke, aar_d) %>% 
+  summarise(mean_fylke = mean(resid)) %>% 
+  ggplot(mapping = aes(x= aar_d, y= mean_fylke, colour = fylke)) +
+  geom_line(lwd=1) +
+  geom_hline(yintercept = 0, colour = "white") +
+  theme(legend.position = "bottom")
+```
+
+## Dummy fylke og år
+
+### i
+
+
 
 
