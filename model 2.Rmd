@@ -138,10 +138,6 @@ pm2 <- pm2 %>%
 ```{r}
 pm2 <- pm2 %>%
   mutate(fylke = substr(knr, start = 1, stop = 2)) 
-
-pm2 <- pm2 %>% 
-  filter(fylke %in% c("01", "02", "03", "11", "12"))
-
 ```
 
 
@@ -150,6 +146,7 @@ pm2 <- pm2 %>%
 ggplot med farge på fylkene, og legend.position. Legger også inn horisontal linje for y
 ```{r ggplot }
 pm2 %>% 
+  filter(fylke %in% c("01", "02", "03","11", "12")) %>% 
   unnest(c(fylke)) %>% 
   group_by(fylke, aar_d) %>% 
   summarise(mean_fylke = mean(resid)) %>% 
@@ -177,9 +174,9 @@ pm2 <- pm2 %>%
   mutate(res_m2 = resid(lm2))
 ```
 
+
 ### iv 
 
-For få farger til å få til opp alle fylkene i en plot. 
 
 ```{r delplot}
 pm2 %>% filter(fnr %in% c("01", "02", "04", "11", "12")) %>%
@@ -238,9 +235,17 @@ Kommuner som overvurderes på pris per kvadratmeter er de som ligger i nærheten
 ### i og ii
 
 ```{r}
+pm2 <- pm2 %>% 
+  mutate(
+    aar_d = date(paste0(aar, "-01-01"))
+  )
+```
+
+
+```{r}
 pm2_n <- pm2 %>% 
-  group_by(aar) %>%
-  select(pm2, fnr, knr, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Total_ya_p, inc_k1, inc_k5, uni_k_mf, uni_l_mf, Trade_pc_100K) %>% 
+  group_by(aar_d) %>%
+  select(pm2, fnr, knr, aar, aar_d, aar_f, Menn_ya_p, Kvinner_ya_p, Total_ya_p, inc_k1, inc_k5, uni_k_mf, uni_l_mf, Trade_pc_100K) %>% 
   nest()
 ```
 
@@ -260,7 +265,7 @@ dim(pm2_n)
 
 ```{r}
 kom_model <- function(a_df) {
-  lm(pm2 ~ fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K, data = pm2)
+  lm(pm2 ~ fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K, data = a_df)
 }
 ```
 
@@ -273,31 +278,106 @@ pm2_n <- pm2_n %>%
 
 
 ```{r}
-kom_model(pm2_n$aar) %>% 
+pm2_n$model[[1]] %>%
   summary()
 ```
 
+
+
 ```{r}
 pm2_n %>% 
-  filter(aar%in% c("2008")) %>% 
+  filter(aar_d == "2008-01-01") %>% 
   .$model %>% 
   map_df(glance) %>% 
   print()
 ```
 
+
+
+
 ```{r}
 mod_sum <- pm2_n %>% 
-  filter(aar %in% c("2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")) %>% 
   mutate(mod_summary = map(.x = model, .f = glance)) %>% 
   unnest(mod_summary) %>% 
   print()
 ```
 
+### i 
+Ny variabel som angir år:
+
+
 ```{r}
-coef_df <- mod_sum %>% 
-  map_df() %>% 
-  as.tibble()
+coef_df <- mod_sum$model %>% 
+  map_df(1) %>% 
+  tibble()
+```
+
+```{r}
+coef_df <- coef_df %>%
+  mutate(
+    aar = ymd(paste(2008:2017, "-01-01", sep = ""))
+  ) %>%
+  select(aar, everything())
 ```
 
 
+### ii
 
+Variabelen til pivot_longer
+
+```{r}
+coef_df_long <- coef_df %>%
+  pivot_longer(
+    cols = `(Intercept)`:`Trade_pc_100K`,
+    names_to = "variables",
+    values_to = "coef")
+```
+
+### iii 
+
+Ggplot av fylke-faktorvariablenes koeffisienter for utvalgte fylker:
+
+```{r}
+coef_df_long %>%
+  select(aar, variables, coef) %>%
+  filter(
+    variables %in% c("fnr02", "fnr03", "fnr04", "fnr10", "fnr11", "fnr12", "fnr14")
+  ) %>%
+  ggplot(mapping = aes(x = aar, y = coef, colour = variables)) +
+  scale_color_viridis(discrete = TRUE, option = "D") +
+  geom_line(aes(group = variables), lwd = 1) +
+  theme(legend.position = 'bottom')
+```
+
+### iv 
+Fylket som er mest stigende er fnr03, ettersom prisene i dette fylket er økende. 
+
+Fylket med den mest stabile prisutviklingen er fnr02.
+
+De resterende fylkene ser som de er utsatt for en prisnedsetting fra 2012 og fremtil 2017. 
+
+
+### v 
+
+I 2014 var det oljekrise og fylker som var avhengig av jobber knyttet til oljenæringen mistet viktig aktivitet, noe som førte til en et fall i prisutviklingen.
+
+### i 
+
+Ggplot med andre variabler:
+```{r}
+coef_df_long %>%
+select(aar, variables, coef) %>%
+filter(
+variables %in% c("Total_ya_p", "inc_k1", "inc_k5", "uni_k_mf", "uni_l_mf", "Trade_pc_100K")
+) %>%
+ggplot(mapping = aes(x = aar, y = coef, colour = variables)) +
+scale_color_viridis(discrete = TRUE, option = "D") +
+geom_line(aes(group = variables), lwd = 1) +
+theme(legend.position = 'bottom')
+```
+
+### ii 
+
+Man ser at det inc_k5 og uni_k_mf er de mest stabile over tid.
+Inc_k1 er svært avtakende og total_ya_p ser også ut til å avta litt. I mens uni_l_mf er økendende. 
+Trade_pc_100K er variabelen som hvertfall ikke er stabil over tid. 
