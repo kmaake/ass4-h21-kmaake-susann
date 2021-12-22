@@ -1,6 +1,9 @@
 ---
 title: "Modeller"
-output: html_notebook
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
@@ -15,7 +18,7 @@ suppressPackageStartupMessages({
 })
 # Chunk opsjonene satt nedenfor er for mitt bruk
 # Gjør at jeg kan holde noen av kortene skjult ;-)
-knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+#knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 ```
 
 
@@ -381,3 +384,8 @@ theme(legend.position = 'bottom')
 Man ser at det inc_k5 og uni_k_mf er de mest stabile over tid.
 Inc_k1 er svært avtakende og total_ya_p ser også ut til å avta litt. I mens uni_l_mf er økendende. 
 Trade_pc_100K er variabelen som hvertfall ikke er stabil over tid. 
+
+```{r, echo = FALSE}
+#siste
+```
+
