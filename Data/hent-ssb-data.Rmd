@@ -18,17 +18,22 @@ lang: no-NB
 ## Data hentet, SSB
 
 ```{r}
-knitr::opts_chunk$set(eval = FALSE)
+# Jeg vil gjerne se resultatet av koden.
+# Dere har brukt samme chunk-navn flere ganger. Gjør at
+# dokumentet ikke kjører. Jeg har endret til mutate, mutate1, mutate2 etc.
+#knitr::opts_chunk$set(eval = FALSE)
 ```
 
 
-```{r setup, include=FALSE}
+```{r setup, echo = FALSE}
 suppressPackageStartupMessages({
   library(PxWebApiData)
   library(tidyverse)
   library(lubridate)
 })
-knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+# Jeg vil gjerne se koden og resultatet
+#knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE)
 ```
 
 Laster inn data for alle kommunene, og disse ligger i "knr.Rdata". 
@@ -110,7 +115,7 @@ Nå skal vi finne hvor mange NA-verdier det er i pm2. Og under kan vi se at vi i
 pm2 %>% 
   map_df(is.na) %>% 
   map_df(sum) %>% 
-  as.tibble()
+  as_tibble()
 ```
 
 
@@ -177,6 +182,7 @@ rm(pm2_raw)
 pop_08_17_ya_raw <- ApiData(
   urlToData = "07459",
   Region = knr,
+  #  Kjonn = c(1,2),
   Kjonn = c(1,2),
   Alder = list("agg:TredeltGrupperingB2",
                c("F20-64")),
@@ -184,7 +190,6 @@ pop_08_17_ya_raw <- ApiData(
 )$dataset %>% 
     select(-ContentsCode, -Alder)
 ```
-
 
 
 ```{r pivotwider}
@@ -206,7 +211,7 @@ names(pop_08_17_ya)[[4]] <- "ya_Kvinner"
 ```
 
 
-```{r mutate}
+```{r mutate2}
 pop_08_17_ya <- pop_08_17_ya %>% 
   mutate(ya_Total = ya_Menn+ya_Kvinner)
 ```
@@ -236,7 +241,7 @@ pop_08_17_raw <- ApiData(
 ```
 
 
-```{r pivotwider}
+```{r pivotwider2}
 pop_08_17 <- pop_08_17_raw %>% 
   pivot_wider(
     names_from = Kjonn,
@@ -245,7 +250,7 @@ pop_08_17 <- pop_08_17_raw %>%
 ```
 
 
-```{r names}
+```{r names2}
 names(pop_08_17)[[1]] <- "knr"
 names(pop_08_17)[[2]] <- "Alder"
 names(pop_08_17)[[3]] <- "aar"
@@ -255,7 +260,7 @@ names(pop_08_17)[[5]] <- "Kvinner"
 
 
 
-```{r pivotwider}
+```{r pivotwider3}
 pop_08_17 <- pop_08_17 %>% 
   pivot_wider(
     names_from = Alder,
@@ -264,7 +269,7 @@ pop_08_17 <- pop_08_17 %>%
 ```
 
 
-```{r mutate}
+```{r mutate3}
 pop_08_17 <- pop_08_17 %>% 
   mutate(Menn_t = Menn_H17 + Menn_H18) %>% 
   mutate(Kvinner_t = Kvinner_H17 + Kvinner_H18) %>% 
@@ -278,11 +283,11 @@ pop_08_17 <- pop_08_17 %>%
 ```
 
 
-```{r dim}
+```{r dim2}
 dim(pop_08_17)
 ```
 
-```{r names}
+```{r names3}
 names(pop_08_17)
 ```
 
@@ -292,14 +297,14 @@ pop_08_17_ya_p <- merge(pop_08_17, pop_08_17_ya)
 
 ### Her skal vi mutere nye variabler
 
-```{r mutate}
+```{r mutate4}
 pop_08_17_ya_p <- pop_08_17_ya_p %>% 
   mutate(Menn_ya_p = ya_Menn/Menn_t*100) %>% 
   mutate(Kvinner_ya_p = ya_Kvinner/Kvinner_t*100) %>% 
   mutate(Total_ya_p = ya_Total/Totalt_t*100)
 ```
 
-```{r select}
+```{r select2}
 pop_08_17_ya_p <- pop_08_17_ya_p %>% 
   select(knr, aar, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
 ```
@@ -331,7 +336,7 @@ rm(pop_08_17_raw, pop_08_17_ya_raw, pop_08_17, pop_08_17_ya, pm2_2006, pm2_2008)
 
 ## Data henting, SSB
 
-```{r henterdata}
+```{r henterdata2}
 inc_08_17_raw <- ApiData(
   urlToData = "12558",
   Region = knr,
@@ -346,7 +351,7 @@ inc_08_17_raw <- ApiData(
 ```
 
 
-```{r pivotwider}
+```{r pivotwider4}
 inc_08_17 <- inc_08_17_raw %>% 
   pivot_wider(
     names_from = Desiler,
@@ -376,11 +381,11 @@ inc_08_17 <- inc_08_17 %>%
   select(knr, aar, inc_k1, inc_k5)
 ```
 
-```{r names}
+```{r names4}
 names(inc_08_17)
 ```
 
-```{r dim}
+```{r dim3}
 dim(inc_08_17)
 ```
 
@@ -448,7 +453,7 @@ uni_p <- uni_p %>%
 ```
 
 
-```{r pivotwider}
+```{r pivotwider5}
 uni_p <- uni_p %>% 
   pivot_wider(
     id_cols = c(knr, aar),
@@ -457,12 +462,12 @@ uni_p <- uni_p %>%
 ) 
 ```
 
-```{r head}
+```{r head2}
 head(uni_p, n = 8)
 ```
 ## Setter sammen uni_p med pm2
 
-```{r merge}
+```{r merge2}
 pm2 <- merge(pm2, uni_p)
 ```
 
@@ -486,7 +491,7 @@ trade_08_17 <- ApiData(
 )
 ```
 
-```{r tibble}
+```{r tibble2}
 trade_08_17 <- tibble(
   aar = trade_08_17$dataset$Tid,
   Trade_p = trade_08_17$dataset$value,
@@ -500,7 +505,7 @@ trade_08_17 <- tibble(
 Trade_pc <- trade_08_17
 ```
 
-```{r merge}
+```{r merge3}
 pm2 <- merge(pm2, Trade_pc)
 ```
 
@@ -510,11 +515,11 @@ pm2 <- merge(pm2, Trade_pc)
 rm(trade_08_17, Trade_pc)
 ```
 
-```{r dim}
+```{r dim4}
 dim(pm2)
 ```
 
-```{r names}
+```{r names5}
 names(pm2)
 ```
 
@@ -531,6 +536,11 @@ pm2 %>%
 ```
 
 ```{r}
-write.csv(pm2, "pm2.csv")
+# write_csv() fra tidyverse er bedre
+write_csv(pm2, "pm2.csv")
+```
+
+```{r, echo = FALSE}
+# siste
 ```
 
